@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Especificando a codificação de caracteres, sendo ela o conjunto UTF-8 -->
+    <meta charset="UTF-8">
+     <!-- Configurando a largura e escala da pagina para exibição-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Adicionando o phaser -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <!-- Título da Página -->
+    <title>Exercício do Pássaro</title>
+    <!-- Adicionando a estilização -->
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Configurações iniciais do Phaser-->
+<script>
+    // configurações do jogo
+    var config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 600,
+
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+    };
+
+    var game = new Phaser.Game(config);
+    var passarinho;
+
+    //carregar os elementos do jogo
+    function preload() {
+        // carregar imagem de fundo
+        this.load.image('bg', 'assets/bg_space.png');
+        // carregar imagem do sol
+        this.load.image('sun', 'assets/sun.png');
+        // carregar passarinho 
+        this.load.spritesheet('bird', 'assets/bird-purple.png', {frameWidth:75, frameHeight:75});
+        
+    }
+
+    // adicionar e configurar os elementos do jogo
+    function create() {
+        // adicionar imagem de fundo
+        this.add.image(400, 300, 'bg').setScale(1.2);
+        // adicionar imagem do sol
+        this.add.image(400, 300, 'sun').setScale(0.3);
+        // adicionar passarinho
+        passarinho = this.add.sprite(100,100,'bird').setScale(1.3);
+        // criar e configurar a animação do passarinho
+        this.anims.create({
+            // "nome" da animação
+            key: 'fly',
+            // quantidades de frames em uso
+            frames: this.anims.generateFrameNumbers('bird', {start: 0, end: 7}), 
+            // quantidade de frames por segundo
+            frameRate: 10, 
+            // repetição continua
+            repeat: -1 
+        })
+        // iniciar animação configurada
+        passarinho.anims.play('fly', true);
+    }
+
+    // atualização em tempo real do jogo
+    function update() { 
+        
+        // passarinho na posição 1/4
+        if(passarinho.x === 100 && passarinho.y === 100){
+            passarinho.idax = true;
+            passarinho.setFlip(false,true);
+            passarinho.setRotation(Phaser.Math.DegToRad(0));
+        }
+        // passarinho iniciando movimento para direita
+        if(passarinho.x < 700 && passarinho.idax === true && passarinho.y === 100){
+            passarinho.x += 5;
+            console.log("O passarinho irá começar a se deslocar para a direita");
+        }
+        // passarinho na posição 2/4
+        if(passarinho.x === 700 && passarinho.y === 100){
+            passarinho.iday = true;
+            passarinho.setRotation(Phaser.Math.DegToRad(90));
+        }
+        // passarinho iniciando movimento para baixo
+        if(passarinho.y < 500  && passarinho.x === 700){
+            passarinho.y += 5;
+        }
+        // passarinho na posição 3/4
+        if(passarinho.y === 500 && passarinho.x === 700){
+            passarinho.idax = false;
+            passarinho.setFlip(true,false);
+            passarinho.setRotation(Phaser.Math.DegToRad(0));
+        }
+        // passarinho iniciando movimento para a esquerda
+        if(passarinho.x > 100 && passarinho.idax === false && passarinho.y === 500){
+            passarinho.x -= 5;
+            console.log("O passarinho irá começar a se deslocar pela esquerda");
+        }
+        // passarinho na posição 4/4
+        if(passarinho.x === 100 && passarinho.y === 500){
+            passarinho.iday = false;
+            passarinho.setRotation(Phaser.Math.DegToRad(90));
+        }
+        // passarinho iniciando movimento para cima
+        if(passarinho.y > 100 && passarinho.iday === false && passarinho.x === 100){
+            passarinho.y -= 5;
+        }
+    
+    }
+
+</script>
+
+<!-- Desafio do While -->
+<script>
+    let i = 0;
+    while(i < 10){
+        console.log("O passarinho está voando!");
+        i++;
+    }
+</script>
+
+</body>
+</html>
